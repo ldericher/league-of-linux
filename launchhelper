@@ -30,6 +30,7 @@ wait_for() { # $1: time, $2: command
 notify_send_wrapper() { # $1: notify_send_wrapper text
     if command -v 'notify-send'; then
         notify-send \
+            -i "${PWD}/drive_c/ProgramData/Riot Games/Metadata/league_of_legends.live/league_of_legends.live.ico" \
             'LoL LaunchHelper' \
             "${1}"
     fi
@@ -66,7 +67,7 @@ if pidof "${RCUX_NAME}" >/dev/null; then
     echo 'OK'
 
     if [ -z "${lcux_pid}" ]; then
-        notify_send_wrapper "${LCUX_NAME} did not spawn in time (ERROR)"
+        notify_send_wrapper "${LCUX_NAME} did not spawn in time, error!"
         die 'Could not find processes of "%s"' "${LCUX_NAME}"
     fi
 
@@ -74,7 +75,7 @@ elif lcux_pid=$(pidof "${LCUX_NAME}"); then
     notify_send_wrapper "Skipped waiting for ${RCUX_NAME} (Step 2/4)"
 
 else
-    notify_send_wrapper "${RCUX_NAME} or ${LCUX_NAME} did not spawn in time (ERROR)"
+    notify_send_wrapper "${RCUX_NAME} or ${LCUX_NAME} did not spawn in time, error!"
     die 'Could not find processes of "%s" or "%s"' "${RCUX_NAME}" "${LCUX_NAME}"
 
 fi
@@ -89,7 +90,7 @@ if [ -z "${ux_port}" ]; then
 fi
 
 echo "${LCUX_NAME} port found: ${ux_port}"
-notify_send_wrapper "Found out about ${LCUX_NAME}, knocking on port ${ux_port} ... (Step 3/4)"
+notify_send_wrapper "Found ${LCUX_NAME}, knocking on port ${ux_port} ... (Step 3/4)"
 
 # pause LeagueClientUx process
 kill -STOP "${lcux_pid}"
